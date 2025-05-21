@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tejas Parab - Portfolio, Projects, Education, Skills, Contact" />
+  <meta name="author" content="Tejas Parab" />
+  <meta property="og:title" content="Tejas Parab | Personal Portfolio Website" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/Tejx29/Enhanced_Portfolio/refs/heads/main/img4.png" />
+  <meta property="og:description" content="Software amd Web developer passionate about building clean, scalable applications and websites." />
+  <meta property="og:url" content="https://tejx29.github.io/Enhanced_Portfolio/" />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#1F2937" />
+  <title>TΣJAS | Portfolio</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <link rel="icon" href="./logo2.jpg" type="image/x-icon">
+
+  <style>
+    .animate-left {
+      animation: slideInLeft 0.6s ease forwards;
+    }
+    @keyframes slideInLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .button-underline {
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .button-underline::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0%;
+      height: 2px;
+      background-color: white;
+      transition: width 0.3s ease;
+    }
+    .button-underline:hover::after {
+      width: 100%;
+    }
+
+    /* Cursor styles */
+    #cursor-dot, #cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 50;
+      transition: transform 0.15s ease-out;
+    }
+
+    #cursor-dot {
+      width: 8px;
+      height: 8px;
+      background-color: black;
+      border-radius: 50%;
+      transition: transform 0.1s linear;
+    }
+
+    #cursor-ring {
+      width: 32px;
+      height: 32px;
+      border: 1.5px solid black;
+      border-radius: 50%;
+    }
+    .hover-scale {
+      transform: translate(-50%, -50%) scale(1.8);
+      border-color: #4f46e5;
+    }
+
+  </style>
+</head>
+<body class="bg-white text-gray-800 font-sans" x-data="portfolio()">
+  <!-- Hamburger Icon -->
+  <div class="md:hidden fixed top-4 left-4 z-50">
+    <button @click="hamburgerMenuOpen = !hamburgerMenuOpen" 
+            class="text-white bg-gray-800 p-2 rounded focus:outline-none">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" 
+           viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+  <div
+    x-show="hamburgerMenuOpen"
+    @click="hamburgerMenuOpen = false"
+    class="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-50"
+    x-transition:leave="transition ease-in duration-300"
+    x-transition:leave-start="opacity-50"
+    x-transition:leave-end="opacity-0"
+    style="display:none;"
+  ></div>
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside
+     :class="hamburgerMenuOpen ? 'translate-x-0' : '-translate-x-full'"
+      class="fixed top-0 left-0 z-40 w-64 h-full bg-gray-800 border-r px-8 py-12 flex flex-col justify-between
+             transform transition-transform duration-300 ease-in-out
+             md:relative md:translate-x-0 md:flex md:flex-col md:h-auto"
+    >
+      <div>
+        <h1 class="text-3xl font-bold mb-12 text-white">TΣJAS.</h1>
+        <nav class="space-y-4 text-sm font-semibold py-10">
+          <button @click="current = 'home'" class="block text-left button-underline hover:text-white" :class="{ 'text-white': current === 'home', 'text-gray-400': current !== 'home' }">HOME</button>
+          <button @click="current = 'about'" class="block text-left button-underline hover:text-white" :class="{ 'text-white': current === 'about', 'text-gray-400': current !== 'about' }">ABOUT</button>
+          <button @click="current = 'projects'" class="block text-left button-underline hover:text-white" :class="{ 'text-white': current === 'projects', 'text-gray-400': current !== 'projects' }">PROJECTS</button>
+          <button @click="current = 'goals'" class="block text-left button-underline hover:text-white" :class="{ 'text-white': current === 'goals', 'text-gray-400': current !== 'goals' }">GOALS</button>
+          <button @click="current = 'interests'" class="block text-left button-underline hover:text-white" :class="{ 'text-white': current === 'interests', 'text-gray-400': current !== 'interests' }">INTERESTS</button>
+          <button @click="current = 'contact'" class="block text-left button-underline hover:text-white" :class="{ 'text-white': current === 'contact', 'text-gray-400': current !== 'contact' }">CONTACT</button>
+        </nav>
+      </div>
+      <div class="text-xs text-gray-400">
+        <p>&copy; 2025 TΣJAS</p>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 p-12 relative overflow-hidden">
+
+      <!-- HOME -->
+      <template x-if="current === 'home'">
+        <div class="absolute inset-0 flex flex-col lg:flex-row items-center justify-center gap-12 animate-left">
+          <div class="text-center lg:text-left max-w-lg">
+            <p class="text-2xl text-gray-400">// 
+              <span x-data="typewriter()" x-init="start()" class="border-r-2 border-white pr-1 font-bold">
+                <span x-text="display"></span> DEVELOPER
+              </span>
+            </p>
+            <h2 class="text-6xl font-bold leading-snug mt-4">TEJAS PARAB<br></h2>
+          </div>
+          <div class="mt-10 lg:mt-0 shadow-lg transform rotate-1 bg-purple-200 rounded-full w-80 h-80 overflow-hidden flex items-center justify-center border border-gray-200">
+            <img src="./img4.png" alt="TΣJAS" class="w-full h-full object-cover" />
+          </div>
+        </div>
+      </template>
+
+      <!-- Typewriter Script -->
+      <script>
+        function typewriter() {
+          return {
+            words: ['WEB', 'SOFTWARE'],
+            display: '',
+            wordIndex: 0,
+            charIndex: 0,
+            isDeleting: false,
+            typingSpeed: 100,
+            deletingSpeed: 50,
+            pauseTime: 1500,
+            start() {
+              this.typeLoop();
+            },
+            typeLoop() {
+              const currentWord = this.words[this.wordIndex];
+              if (this.isDeleting) {
+                this.display = currentWord.substring(0, this.charIndex);
+                this.charIndex--;
+              } else {
+                this.display = currentWord.substring(0, this.charIndex);
+                this.charIndex++;
+              }
+              let delay = this.isDeleting ? this.deletingSpeed : this.typingSpeed;
+              if (!this.isDeleting && this.charIndex > currentWord.length) {
+                delay = this.pauseTime;
+                this.isDeleting = true;
+                this.charIndex = currentWord.length;
+              } else if (this.isDeleting && this.charIndex < 0) {
+                this.isDeleting = false;
+                this.wordIndex = (this.wordIndex + 1) % this.words.length;
+                this.charIndex = 0;
+                delay = 500;
+              }
+              setTimeout(() => this.typeLoop(), delay);
+            }
+          }
+        }
+      </script>
+
+      <!-- ABOUT -->
+      <template x-if="current === 'about'">
+        <div class="absolute inset-0 animate-left p-12 flex items-center justify-center">
+          <div class="max-w-6xl w-full grid grid-cols-[1fr_1px_1fr] gap-12 items-start">
+            <div class="space-y-4">
+              <h3 class="text-3xl font-bold">// BIOGRAPHY</h3>
+              <p class="text-gray-600 text-lg ">
+                I'm a passionate developer who loves turning ideas into real, working products. Whether it's designing clean UI/UX for web apps, building backend logic, or experimenting with new technologies, I'm always up for a challenge. Over the years, I’ve worked on a variety of projects — from personal apps and college assignments to collaborative open-source contributions. I enjoy building things from scratch just as much as optimizing existing systems. My journey in tech started with curiosity and a lot of trial and error, but every bug I’ve fixed and every feature I’ve shipped has made me better at what I do.
+              </p>
+            </div>
+            <div class="bg-gray-300 h-full w-px mx-auto"></div>
+            <div class="space-y-2 text-lg text-gray-700">
+              <h3 class="text-3xl font-bold">// PERSONAL DETAILS</h3>
+              <p><strong>Name:</strong> Tejas Parab</p>
+              <p><strong>Address:</strong> Virar, Maharashtra</p>
+              <p><strong>Study:</strong> St. John College of Engineering and Management</p>
+              <p><strong>Degree:</strong> B-Tech in Computer Engineering</p>
+              <p><strong>Mail:</strong> 223tejas2005@sjcem.edu.in</p>
+              <p><strong>Phone:</strong> 9823022508</p>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- PROJECTS -->
+      <template x-if="current === 'projects'">
+        <div class="absolute inset-0 flex items-center justify-center p-3 animate-left overflow-x-auto">
+          <div class="max-w-2xl">
+            <h3 class="text-3xl font-bold mb-8">// PROJECTS</h3>
+            <ul id="projects-list" class="list-none text-gray-700 text-left text-lg space-y-2">
+              <li class="whitespace-nowrap">🚀 Built a full-stack notes app with login, search, and dark mode</li>
+              <li class="whitespace-nowrap">🎮 Created a first-person shooter prototype in Unity using C#</li>
+              <li class="whitespace-nowrap">🌐 Designed and deployed responsive portfolio and blog websites using HTML, CSS, JS, and React</li>
+              <li class="whitespace-nowrap">🛠️ Explored backend development using Node.js, Express, and MongoDB</li>
+              <li class="whitespace-nowrap">🧠 Dabbled in Python for automation scripts, data parsing, and even some basic AI/ML experiments</li>
+              <li class="whitespace-nowrap">📱 Developed mobile-friendly UIs with Flutter and React Native (in progress)</li>
+            </ul>
+          </div>
+        </div>
+      </template>
+
+      <!-- GOALS -->
+      <template x-if="current === 'goals'">
+        <div class="absolute inset-0 flex items-center justify-center p-12 animate-left overflow-x-auto">
+          <div class="mt-8 max-w-2xl text-left text-gray-700 text-lg px-4" style="font-family: 'Inter', sans-serif;">
+            <h3 class="text-3xl font-bold mb-8">// GOALS</h3>
+            <ul class="list-none list-inside space-y-2">
+              <li class="whitespace-nowrap">🌟 Master full-stack development with scalable cloud infrastructure (AWS/GCP)</li>
+              <li class="whitespace-nowrap">🤖 Build and deploy AI-powered web applications integrating machine learning models</li>
+              <li class="whitespace-nowrap">🎮 Develop a fully-featured multiplayer FPS game using Unity and Photon Networking</li>
+              <li class="whitespace-nowrap">📱 Launch cross-platform mobile apps with Flutter that combine seamless UI and backend integration</li>
+              <li class="whitespace-nowrap">🔧 Contribute to open-source projects focused on developer tooling and productivity</li>
+              <li class="whitespace-nowrap">📊 Gain deeper experience with data visualization and interactive dashboards</li>
+              <li class="whitespace-nowrap">🛠️ Explore DevOps practices and automate CI/CD pipelines for rapid deployment</li>
+            </ul>
+          </div>
+        </div>
+      </template>
+
+      <!-- INTERESTS -->
+      <template x-if="current === 'interests'">
+        <div class="absolute inset-0 animate-left p-12 flex flex-col items-center justify-start space-y-12 overflow-y-auto">
+          <h3 class="text-3xl font-bold">// INTERESTS</h3>
+
+          <div class="text-lg text-gray-700 space-y-4 max-w-3xl">
+            <p>🎨 <strong>Art:</strong> I enjoy sketching and exploring digital design tools like Figma and Photoshop. It helps me express creativity outside of code.</p>
+            <p>🎬 <strong>Movies:</strong> I'm a huge fan of science fiction and superhero films — from the Marvel Cinematic Universe to thought-provoking stories like Interstellar and Inception. They inspire my imagination and sometimes even my UI design!</p>
+          </div>
+
+            <!-- Embedded Video -->
+          <div class="max-w-2xl w-full shadow-lg rounded-lg overflow-hidden">
+            <div class="relative w-full" style="padding-top: 56.25%; height: 0;"> <!-- 16:9 aspect ratio -->
+              <iframe 
+                class="absolute top-0 left-0 w-full h-full"
+                src="https://www.youtube.com/embed/mqqft2x_Aa4" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </template>
+
+
+      <!-- CONTACT -->
+      <template x-if="current === 'contact'">
+        <div class="absolute inset-0 animate-left flex flex-col h-full">
+          <div class="flex-1 overflow-y-scroll snap-y snap-mandatory">
+
+
+
+            <!-- Contact Info + Form -->
+            <div class="min-h-screen snap-start p-12 space-y-10">
+              <h3 class="text-3xl font-bold">// GET IN TOUCH</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center text-sm text-gray-700">
+                <div class="border p-4"><p>📍 Virar, Maharashtra</p></div>
+                <div class="border p-4"><p>📞 9823022508</p></div>
+                <div class="border p-4"><p>✉️ 223tejas2005@sjcem.edu.in</p></div>
+                <div class="border p-4 flex items-center justify-center gap-2">
+                  <div class="flex gap-2">
+                    <a href="https://www.instagram.com/tejasprb" target="_blank" rel="noopener noreferrer" class="border p-1 rounded cursor-pointer">
+                      <img src="./ig.svg" alt="Instagram" class="w-5 h-5" />
+                    </a>
+                    <a href="https://www.linkedin.com/in/tejas-parab" target="_blank" rel="noopener noreferrer" class="border p-1 rounded cursor-pointer">
+                      <img src="./li.svg" alt="LinkedIn" class="w-5 h-5" />
+                    </a>
+                    <a href="https://www.github.com/Tejx29" target="_blank" rel="noopener noreferrer" class="border p-1 rounded cursor-pointer">
+                      <img src="./git.png" alt="Github" class="w-5 h-5" />
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+
+              <form 
+                class="grid grid-cols-1 md:grid-cols-2 gap-4" 
+                action="https://formspree.io/f/xvgayglj" 
+                method="POST">
+                <input type="text" name="name" placeholder="Name" required class="border px-4 py-2" />
+                <input type="email" name="email" placeholder="Email" required class="border px-4 py-2" />
+                <input type="text" name="phone" placeholder="Phone" class="border px-4 py-2" />
+                <select name="service" required class="border px-4 py-2 text-gray-500">
+                  <option value="">Choose Service</option>
+                  <option>Web Design</option>
+                  <option>Development</option>
+                  <option>Branding</option>
+                </select>
+               <textarea name="message" placeholder="Message" required class="border px-4 py-2 md:col-span-2" rows="4"></textarea>
+                <button type="submit" class="bg-black text-white px-6 py-2 rounded md:col-span-2 w-full hover:bg-gray-800">
+                  Send Message
+                </button>
+              </form>
+            </div>
+
+            <!-- Google Map -->
+            <div class="min-h-screen snap-start flex items-center justify-center p-4 bg-gray-100">
+              <div class="w-96 h-96 md:w-[500px] md:h-[500px] rounded-lg overflow-hidden shadow-lg">
+                <iframe 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3756.154620522548!2d72.78350789999998!3d19.706040200000007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be71c92fbd91e67%3A0x2a3ce68676417a45!2sSt.%20John%20College%20of%20Engineering%20and%20Management!5e0!3m2!1sen!2sin!4v1747728346790!5m2!1sen!2sin" 
+                  width="100%" 
+                  height="100%" 
+                  style="border:0;" 
+                  allowfullscreen="" 
+                  loading="lazy" 
+                  referrerpolicy="no-referrer-when-downgrade"
+                  class="w-full h-full"
+                ></iframe>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </template>
+
+
+    </main>
+
+    <!-- Cursor -->
+    <div id="cursor-dot" class="fixed w-2 h-2 bg-black rounded-full pointer-events-none z-50"></div>
+    <div id="cursor-ring" class="fixed w-8 h-8 border border-black rounded-full pointer-events-none z-50"></div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      const dot = document.getElementById('cursor-dot');
+      const ring = document.getElementById('cursor-ring');
+
+      let mouseX = 0, mouseY = 0;
+      let ringX = 0, ringY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        dot.style.left = mouseX + 'px';
+        dot.style.top = mouseY + 'px';
+      });
+
+      function animateRing() {
+        ringX += (mouseX - ringX) * 0.15;
+        ringY += (mouseY - ringY) * 0.15;
+        ring.style.left = ringX + 'px';
+        ring.style.top = ringY + 'px';
+        requestAnimationFrame(animateRing);
+      }
+      animateRing();
+
+  // Hover scale on interactive elements
+      const hoverTargets = document.querySelectorAll('button, a, .cursor-hover');
+      hoverTargets.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          ring.classList.add('hover-scale');
+        });
+        el.addEventListener('mouseleave', () => {
+          ring.classList.remove('hover-scale');
+        });
+      });
+    });
+
+  </script>
+  <script>
+    async function loadProjects() {
+      try {
+        const response = await fetch('data.json');
+        const data = await response.json();
+
+        const projectsList = document.getElementById('projects-list');
+        projectsList.innerHTML = ''; // clear existing content if any
+
+        data.projects.forEach(project => {
+          const li = document.createElement('li');
+          li.textContent = project;
+          li.className = "whitespace-nowrap";
+          projectsList.appendChild(li);
+        });
+      } catch (error) {
+       console.error('Error loading projects:', error);
+      }
+    } 
+
+    // Watch Alpine's 'current' and reload projects when 'projects' tab is selected
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('portfolio', () => ({
+        current: 'home',
+        hamburgerMenuOpen: false,
+        init() {
+          this.$watch('current', value => {
+            if(value === 'projects') {
+              loadProjects();
+            }
+          });
+        }
+      }))
+    });
+  </script>
+
+</div>
+</body>
+</html>
